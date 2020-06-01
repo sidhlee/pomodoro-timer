@@ -1,1 +1,3 @@
-# FCC Front End Libraries Projects - Build a Pomodoro Clock
+# Pomodoro Timer
+
+VSCode-themed pomodoro timer as a part of FCC Frontend libraries projects.
