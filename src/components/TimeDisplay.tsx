@@ -13,11 +13,18 @@ declare module 'figlet' {
 
 figlet.parseFont('Standard', standard);
 
-const StyledTimeDisplay = styled.div`
+const StyledTimeDisplay = styled.div<{ seconds: number }>`
   text-align: center;
   margin: 1em auto;
-  color: var(--cl-green);
   font-weight: 700;
+  color: var(--cl-green);
+  pre {
+    color: ${(props) => {
+      if (props.seconds <= 300) return 'var(--cl-red)';
+      else if (props.seconds <= 600) return 'var(--cl-orange)';
+      else return 'var(--cl-green)';
+    }};
+  }
 `;
 
 type TimeDisplayProps = {
@@ -32,7 +39,7 @@ function TimeDisplay(props: TimeDisplayProps) {
   });
 
   return (
-    <StyledTimeDisplay>
+    <StyledTimeDisplay seconds={props.secondsLeft}>
       <p>/* =====================</p>
       <pre>{time}</pre>
       <p> ====================== */ </p>
