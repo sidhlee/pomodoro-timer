@@ -89,7 +89,7 @@ function App() {
           }}
           handleResetClick={handleReset}
         />
-        <VscFooter secondsLeft={secondsLeft} />
+        <VscFooter secondsLeft={secondsLeft} mode={TimerMode[timerMode]} />
       </div>
       <audio id="beep" preload="auto" src={beep} ref={audioRef} />
     </div>
