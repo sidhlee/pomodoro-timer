@@ -1,5 +1,8 @@
 import { css } from 'styled-components';
 
+/**
+ * Base style rules for button
+ */
 export const buttonCss = css`
   cursor: pointer;
   font: inherit;

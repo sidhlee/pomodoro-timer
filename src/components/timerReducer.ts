@@ -12,6 +12,7 @@ export type TimerState = {
   isRunning: boolean;
   timerMode: TimerMode;
   started: boolean;
+  message: string | null;
 };
 
 export const initialTimerState: TimerState = {
@@ -21,6 +22,7 @@ export const initialTimerState: TimerState = {
   isRunning: false,
   timerMode: TimerMode.Session,
   started: false,
+  message: null,
 };
 
 export type TimerAction =
@@ -32,68 +34,127 @@ export type TimerAction =
   | { type: 'TIMER_RESET' }
   | { type: 'TIMER_TICK' };
 
+// TODO: Implement tooltip to show these messages on inc/dec buttons
+const MESSAGES = [
+  'Please reset to change session length.',
+  'Please reset to change break length.',
+  'Length must be between 1 and 60.',
+];
+
 const incrementBreak = (state: TimerState, action: TimerAction) => {
-  if (state.breakLength >= 60) return state;
+  if (state.breakLength >= 60) {
+    return {
+      ...state,
+      message: MESSAGES[2],
+    };
+  }
   if (state.timerMode === TimerMode.Break) {
-    if (state.started) return state;
+    // Users cannot change length until reset
+    if (state.started) {
+      return {
+        ...state,
+        message: MESSAGES[1],
+      };
+    }
+    // Timer is reset and hasn't started again
     return {
       ...state,
       secondsLeft: state.secondsLeft + 60,
       breakLength: state.breakLength + 1,
+      message: null,
     };
   }
+  // If we're in other modes, we can change
   return {
     ...state,
     breakLength: state.breakLength + 1,
+    message: null,
   };
 };
 
 const decrementBreak = (state: TimerState, action: TimerAction) => {
-  if (state.breakLength <= 1) return state;
+  if (state.breakLength <= 1) {
+    return {
+      ...state,
+      message: MESSAGES[2],
+    };
+  }
   if (state.timerMode === TimerMode.Break) {
-    if (state.started) return state;
+    // Users cannot change length before reset
+    if (state.started) {
+      return {
+        ...state,
+        message: MESSAGES[1],
+      };
+    }
     return {
       ...state,
       secondsLeft: state.secondsLeft - 60,
       breakLength: state.breakLength - 1,
+      message: null,
     };
   }
   return {
     ...state,
     breakLength: state.breakLength - 1,
+    message: null,
   };
 };
 const incrementSession = (state: TimerState, action: TimerAction) => {
-  if (state.sessionLength >= 60) return state;
+  if (state.sessionLength >= 60) {
+    return {
+      ...state,
+      message: MESSAGES[2],
+    };
+  }
   if (state.timerMode === TimerMode.Session) {
-    //  Only allow users to change length after reset
-    if (state.started) return state;
+    // Users cannot change length before reset
+    if (state.started) {
+      return {
+        ...state,
+        message: MESSAGES[0],
+      };
+    }
     return {
       ...state,
       secondsLeft: state.secondsLeft + 60,
       sessionLength: state.sessionLength + 1,
+      message: null,
     };
   }
   return {
     ...state,
     sessionLength: state.sessionLength + 1,
+    message: null,
   };
 };
 
 const decrementSession = (state: TimerState, action: TimerAction) => {
-  if (state.sessionLength <= 1) return state;
+  if (state.sessionLength <= 1) {
+    return {
+      ...state,
+      message: MESSAGES[2],
+    };
+  }
   if (state.timerMode === TimerMode.Session) {
-    // if timer is running, don't allow users to change the length of the current mode
-    if (state.started) return state;
+    // Users cannot change length before reset
+    if (state.started) {
+      return {
+        ...state,
+        message: MESSAGES[0],
+      };
+    }
     return {
       ...state,
       secondsLeft: state.secondsLeft - 60,
       sessionLength: state.sessionLength - 1,
+      message: null,
     };
   }
   return {
     ...state,
     sessionLength: state.sessionLength - 1,
+    message: null,
   };
 };
 
@@ -102,6 +163,7 @@ const startStop = (state: TimerState, action: TimerAction) => {
     ...state,
     isRunning: !state.isRunning,
     started: true,
+    message: null,
   };
 };
 

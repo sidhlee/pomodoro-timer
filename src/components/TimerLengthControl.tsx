@@ -44,6 +44,7 @@ type TimerLengthControlProps = {
 function TimerLengthControl(props: TimerLengthControlProps) {
   return (
     <StyledTimerLengthControl>
+      {/* id added for FCC testing */}
       <label id={`${props.name}-label`} htmlFor={`${props.name}-length`}>
         {props.name} length
       </label>

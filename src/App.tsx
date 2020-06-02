@@ -30,12 +30,15 @@ function App() {
     };
     if (isRunning) {
       idRef.current = setInterval(tick, 1000);
-    } else {
-      clearInterval(idRef.current);
     }
-    return () => clearInterval(idRef.current);
+    // If timer is paused, prev interval is cleared, and new interval is NOT set.
+    return () => {
+      clearInterval(idRef.current);
+    };
   }, [isRunning]);
 
+  // checks every second for completion
+  // we could add a flag to only check when completed but I don't think it's worth it.
   useEffect(() => {
     if (secondsLeft === 0 && audioRef.current) {
       audioRef.current.volume = 0.5;
@@ -46,6 +49,7 @@ function App() {
   const handleReset = () => {
     dispatch({ type: 'TIMER_RESET' });
     if (audioRef.current) {
+      // Upon reset, stop playing and rewind
       audioRef.current.pause();
       audioRef.current.currentTime = 0;
     }

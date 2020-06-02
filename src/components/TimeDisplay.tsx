@@ -5,12 +5,14 @@ import standard from 'figlet/importable-fonts/Standard.js';
 
 import { formatSeconds } from '../util/conversion';
 
-// Declaration merging
-// https://www.typescriptlang.org/docs/handbook/declaration-merging.html
 declare module 'figlet' {
+  // Module Augmentation
+  // paseFont function is missing type definition, so we're adding it here.
+  // https://www.typescriptlang.org/docs/handbook/declaration-merging.html#module-augmentation
   function parseFont(fontName: string, data: string): FontOptions;
 }
 
+// https://github.com/patorjk/figlet.js#getting-started---webpack--react
 figlet.parseFont('Standard', standard);
 
 const StyledTimeDisplay = styled.div<{ seconds: number }>`
@@ -32,6 +34,7 @@ type TimeDisplayProps = {
 };
 function TimeDisplay(props: TimeDisplayProps) {
   const formattedTime = formatSeconds(props.secondsLeft);
+  // https://github.com/patorjk/figlet.js#font-options
   const time = figlet.textSync(formattedTime, {
     font: 'Standard',
     horizontalLayout: 'full',
@@ -41,6 +44,7 @@ function TimeDisplay(props: TimeDisplayProps) {
   return (
     <StyledTimeDisplay seconds={props.secondsLeft}>
       <p>/* =====================</p>
+      {/* ASCII arts need to be in pre tag to keep the newline characters */}
       <pre>{time}</pre>
       <p> ====================== */ </p>
     </StyledTimeDisplay>

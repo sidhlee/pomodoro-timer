@@ -10,8 +10,10 @@ const StyledVscFooter = styled.footer`
   width: 100%;
   color: var(--cl-white);
   background: var(--cl-primary);
-  padding: 0.3em 2em;
+  padding: 0.3em 1.5em;
   display: flex;
+  justify-content: space-around;
+  border-radius: 0 0 var(--border-radius) var(--border-radius);
 
   span,
   p {
@@ -19,16 +21,14 @@ const StyledVscFooter = styled.footer`
   }
 
   span:not(:last-of-type) {
-    margin-right: 1em;
+    margin-right: 0.5em;
   }
 
-  border-radius: 0 0 var(--border-radius) var(--border-radius);
-  a {
-    text-decoration: none;
-    font-weight: 700;
-  }
   .credit {
-    margin-left: auto;
+    a {
+      text-decoration: none;
+      font-weight: 700;
+    }
   }
 `;
 
@@ -42,12 +42,9 @@ function VscFooter(props: Props) {
   return (
     <StyledVscFooter>
       <span>[{props.mode}]</span>
-      <p>
-        Time left -{' '}
-        <span id="time-left">
-          {getMinute(seconds)} min {getSecond(seconds)} sec{' '}
-        </span>
-      </p>
+      <span id="time-left">
+        {getMinute(seconds)} min {getSecond(seconds)} sec{' '}
+      </span>
       <span className="credit">
         by <a href="https://github.com/toypiano">toypiano</a>
       </span>
