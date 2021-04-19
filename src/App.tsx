@@ -60,9 +60,9 @@ function App() {
     <div className="App">
       <div className="app-container">
         <header className="app-header">
-          <h1>pomodoro timer</h1>
+          <h1>visual studio timer</h1>
+          <p id="timer-label">{TimerMode[timerMode]}</p>
         </header>
-        <p id="timer-label">{TimerMode[timerMode]}</p>
         <TimeDisplay secondsLeft={secondsLeft} />
         <section className="timer-length">
           <TimerLengthControl
@@ -93,8 +93,8 @@ function App() {
           }}
           handleResetClick={handleReset}
         />
-        <VscFooter secondsLeft={secondsLeft} mode={TimerMode[timerMode]} />
       </div>
+      <VscFooter secondsLeft={secondsLeft} mode={TimerMode[timerMode]} />
       <audio id="beep" preload="auto" src={beep} ref={audioRef} />
     </div>
   );
