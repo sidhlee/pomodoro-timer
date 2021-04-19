@@ -46,7 +46,7 @@ function VscFooter(props: Props) {
         {getMinute(seconds)} min {getSecond(seconds)} sec{' '}
       </span>
       <span className="credit">
-        by <a href="https://github.com/toypiano">toypiano</a>
+        by <a href="https://github.com/sidhlee">sidhlee</a>
       </span>
     </StyledVscFooter>
   );
